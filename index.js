@@ -29,11 +29,9 @@
 
 class Musician {
   static count = () => this === 0;
-  #name = '';
-  #instrument = '';
-  play() {
-    console.log();
-  }
+  #name;
+  #instrument;
+ 
 
   // статичне поле count, яке відслідковує кількість музикантів, початкове значення 0
   // Об'являємо приватні поля #name; #instrument;
@@ -114,7 +112,7 @@ class Musician {
  */
 
 class Guitarist extends Musician {
-  #band = String;
+  #band;
   constructor(name, instrument, band) {
     super(name, instrument);
     this.#band = band;
@@ -178,7 +176,7 @@ class Guitarist extends Musician {
  */
 
 class Bassist extends Musician {
-  #band = '';
+  #band;
   constructor(name, instrument, band) {
     super(name, instrument);
     this.#band = band;
@@ -230,9 +228,11 @@ Object.defineProperty(Musician.prototype, 'band', {
  */
 
 class Band {
-  #name = '';
-  #members = Array;
+  #name;
+  #members;
   constructor(name, members) {
+    this.#name  = name;
+    this.#members = [...members];
   }
   get name() {
       return this.#name;
@@ -243,20 +243,18 @@ class Band {
   set name(newName) {
     this.#name = newName;
   }
-  addMember = () => {
+  addMember(newMember) {
     if(newMember instanceof Musician) {
-      this.#members = newMember;
+      newMember.band = this.#name;
+      this.#members.push(newMember);
     } else {
       console.log("Новий учасник повинен бути екземпляром класу Musician");
     }
    }
-   playMusic()  {
-    let newPlay = this.#members.array.forEach(element => {
-      play = () => {
-        console.log(element);
-      }
-    });
-   }
+   playMusic() {
+    this.#members.forEach((member) => 
+      member.play());
+    }
   // Об'являємо приватні поля #name; #members;
   /*
    * Створюємо конструктор з двома вхідними параметрами: #name і #members
@@ -287,7 +285,7 @@ class Performance {
   #date;
   constructor(band, location, date) {
    this.#band = band;
-   this.#location = String;
+   this.#location = location;
    this.#date = date;
   }
   get band () {
@@ -321,9 +319,10 @@ class Performance {
  * | ticketPrice |  number    |
  */
 class Concert extends Performance {
-  #ticketPrice = Number;
+  #ticketPrice;
   constructor(band, location, date, ticketPrice) {
-    super(band, location, date, ticketPrice);
+    super(band, location, date);
+    this.#ticketPrice = ticketPrice;
   }
   get ticketPrice() {
     return this.#ticketPrice;
@@ -351,8 +350,8 @@ class Concert extends Performance {
  * | band        |  string    |
  */
 class Vocalist {
-  #name = String;
-  #band = String;
+  #name;
+  #band;
   constructor(name, band) {
     this.#name = name;
     this.#band = band;
@@ -390,7 +389,7 @@ class Vocalist {
  * | #songs       |  array     |
  */
 class SongWriter {
-  #songs = Array;
+  #songs;
   constructor(songs) {
     this.#songs = songs;
   }
